@@ -10,6 +10,7 @@
 
 using namespace std::experimental;
 using std::cout;
+using std::cin;
 
 static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
 {   
@@ -54,12 +55,30 @@ int main(int argc, const char **argv)
     // TODO: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below.
+    float start_x, start_y, end_x, end_y;
+    cout << "(0,0) left-bottom and (100,100) at right-top\n";
+
+    cout << "Enter 0<= start_x <= 100\n";
+    cin  >> start_x;
+
+    cout << "Enter 0<= start_y <= 100\n";
+    cin  >> start_y;
+
+
+    cout << "Enter 0<= end_x <= 100\n";
+    cin  >> end_x;
+
+
+    cout << "Enter 0<= end_y <= 100\n";
+    cin  >> end_y;
+
+
 
     // Build Model.
     RouteModel model{osm_data};
 
     // Perform search and render results.
-    RoutePlanner route_planner{model, 10, 10, 90, 90};
+    RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
     route_planner.AStarSearch();
     Render render{model};
 

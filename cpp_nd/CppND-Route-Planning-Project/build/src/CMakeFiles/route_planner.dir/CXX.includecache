@@ -6,38 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../src/../thirdparty/pugixml/src/pugiconfig.hpp
-
-../src/../thirdparty/pugixml/src/pugixml.hpp
-pugiconfig.hpp
-../src/../thirdparty/pugixml/src/pugiconfig.hpp
-stddef.h
--
-exception
--
-iterator
--
-iosfwd
--
-string
--
-
-/share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/model.cpp
-model.h
-/share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/model.h
-pugixml.hpp
-/share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/pugixml.hpp
-iostream
--
-string_view
--
-cmath
--
-algorithm
--
-assert.h
--
-
 /share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/model.h
 vector
 -
@@ -46,16 +14,6 @@ unordered_map
 string
 -
 cstddef
--
-
-/share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/route_model.cpp
-route_model.h
-/share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/route_model.h
-iostream
--
-vector
--
-limits
 -
 
 /share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/route_model.h
@@ -74,6 +32,8 @@ iostream
 route_planner.h
 /share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/route_planner.h
 algorithm
+-
+vector
 -
 
 /share_path/repo/cpp_nanodegree/cpp_nd/CppND-Route-Planning-Project/src/route_planner.h
