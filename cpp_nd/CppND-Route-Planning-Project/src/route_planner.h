@@ -27,4 +27,5 @@ class RoutePlanner {
 
     vector <RouteModel::Node *> open_list;
     RouteModel::Node * NextNode();
+    void AddNeighbors(RouteModel::Node *);
 };
