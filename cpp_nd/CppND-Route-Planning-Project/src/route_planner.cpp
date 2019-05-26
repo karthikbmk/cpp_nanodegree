@@ -1,14 +1,57 @@
 #include "route_planner.h"
 #include <algorithm>
+#include <vector>
+
+using std::vector;
+using std::cout;
+using std::sort;
 
 RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, float end_x, float end_y): m_Model(model) {
-    start_x *= start_x * 0.01;
-    start_y *= start_y * 0.01;
-    end_x *= end_x * 0.01;
-    end_y *= end_y * 0.01;
+    start_x *= 0.01;
+    start_y *= 0.01;
+    end_x *= 0.01;
+    end_y *= 0.01;
 
-    start_node  = m_Model.FindClosestNode(start_x, start_y);
-    end_node = m_Model.FindClosestNode(end_x, end_y);
+    start_node  = &m_Model.FindClosestNode(start_x, start_y);
+    end_node = &m_Model.FindClosestNode(end_x, end_y);
 
 
+}
+
+vector <RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node){
+    vector <RouteModel::Node>  path_found = {};
+
+    distance = 0.0f;
+    
+    while(current_node->parent != nullptr){
+        path_found.push_back(*current_node);
+        
+        float tmp_dist = current_node->distance(*(current_node->parent));
+        distance += tmp_dist;
+
+        current_node = current_node->parent;
+    }
+
+    path_found.push_back(*current_node);
+    distance *= m_Model.MetricScale();
+    return path_found;
+}
+
+
+void RoutePlanner::AStarSearch(){
+    end_node->parent = start_node;
+    m_Model.path = ConstructFinalPath(end_node);
+}
+
+
+float RoutePlanner::CalculateHValue(const RouteModel::Node * cur_node){
+    float h_val;
+    h_val = cur_node->distance(*end_node);
+    return h_val;
+}
+
+RouteModel::Node * RoutePlanner::NextNode(){
+    sort(open_list.begin(), open_list.end(),[] (const auto &l1, const auto &l2){
+        return l1->h_value + l1->g_value < l2->h_value + l2->g_value;
+    });
 }

@@ -5,6 +5,7 @@
 
 using std::vector;
 using std::numeric_limits;
+using std::cout;
 
 
 RouteModel::RouteModel(const std::vector<std::byte> &xml) : Model(xml) {
@@ -15,20 +16,22 @@ RouteModel::RouteModel(const std::vector<std::byte> &xml) : Model(xml) {
         m_Nodes.push_back(rm_node);
         i+=1;
     }
+    CreateNodeToRoadHashMap();
+
 
 }
 
 void RouteModel::CreateNodeToRoadHashMap(){
-    for(Road road : Roads()){
+    for(auto &road : Roads()){
         if (road.type != Model::Road::Type::Footway){
             for (int node_idx : Ways()[road.way].nodes){
                  if (node_to_road.find(node_idx) == node_to_road.end()){
                     node_to_road[node_idx] = vector <const Model::Road*> ();
                 }
                 node_to_road[node_idx].push_back(&road);
+                }
             }
         }
-    }
 }
 
 RouteModel::Node* RouteModel::Node::FindNeighbor(vector<int> node_indices){
@@ -41,7 +44,7 @@ RouteModel::Node* RouteModel::Node::FindNeighbor(vector<int> node_indices){
         if (!is_visited && dist > 0){
             if (dist < closest_dist){
                 closest_dist = dist;
-                closest_node = &tmp_node;
+                closest_node = &parent_model->SNodes()[node_idx];
             }
         }
     }
