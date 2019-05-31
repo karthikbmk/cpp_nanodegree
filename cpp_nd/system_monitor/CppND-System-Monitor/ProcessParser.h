@@ -44,14 +44,14 @@ private:
 };
 
 // TODO: Define all of the above functions below:
-string ProcessParser::getCmd(string pid){
-    string cmdline_path = Path::basePath();
+std::string ProcessParser::getCmd(string pid){
+    std::string cmdline_path = Path::basePath();
     cmdline_path += pid;
     cmdline_path += "/";
     cmdline_path += Path::cmdPath;
 
     std::ifstream stream;
-    getStream(cmdline_path, stream);
+    Util::getStream(cmdline_path, stream);
     
     string line;
     std::getLine(stream, line);
