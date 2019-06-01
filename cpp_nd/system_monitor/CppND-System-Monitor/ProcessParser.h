@@ -187,6 +187,8 @@ string ProcessParser::getProcUser(string pid)
             break;
         }
     }
+    stream.close();
+
     Util::getStream("/etc/passwd", stream);
     name =("x:" + result);
     // Searching for name of the user with selected UID
@@ -414,3 +416,14 @@ int ProcessParser::getNumberOfRunningProcesses()
 }
 
 
+bool ProcessParser::isPidExisting(string pid){
+    bool isPidExisting = false;
+    vector<string> pidList =  ProcessParser::getPidList();
+    for(string tmp_pid : pidList){
+        if (pid == tmp_pid){
+            isPidExisting = true;
+            break;
+        }
+    }
+    return isPidExisting;
+}
