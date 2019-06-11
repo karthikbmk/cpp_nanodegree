@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <list>
 #include <typeinfo>
 #include <cstdlib>
@@ -111,7 +112,6 @@ Pointer<T,size>::Pointer(T *t){
 
     // TODO: Implement Pointer constructor
     // Lab: Smart Pointer Project Lab
-    first = true;
     
     addr = t;
     arraySize = size;
@@ -120,7 +120,6 @@ Pointer<T,size>::Pointer(T *t){
         isArray = true;
     else
         isArray = false;
-    
     
     PtrDetails<T> tmp_ptr;
     tmp_ptr.refcount = 1;
@@ -155,6 +154,12 @@ Pointer<T, size>::~Pointer(){
     
     // TODO: Implement Pointer destructor
     // Lab: New and Delete Project Lab
+
+    typename std::list<PtrDetails<T> >::iterator tmp_ptr;
+    tmp_ptr = findPtrInfo(this->addr);
+
+    tmp_ptr->refcount -= 1;
+    collect();
 }
 
 // Collect garbage. Returns true if at least
@@ -165,7 +170,31 @@ bool Pointer<T, size>::collect(){
     // TODO: Implement collect function
     // LAB: New and Delete Project Lab
     // Note: collect() will be called in the destructor
-    return false;
+    bool is_freed = false;
+    typename list<PtrDetails<T>>::iterator it;
+
+        for(it = refContainer.begin(); it != refContainer.end() ;it++)
+        {
+            if (it->refcount == 0 && it->memPtr)
+            {
+                if (it->isArray)
+                {
+                    delete [] it->memPtr;
+                }
+                else
+                {
+                    delete it->memPtr;
+                }
+
+                refContainer.erase(it);
+                --it;
+                is_freed = true;
+            }
+        }
+
+
+
+    return is_freed;
 }
 
 // Overload assignment of pointer to Pointer.
@@ -174,13 +203,11 @@ T *Pointer<T, size>::operator=(T *t){
 
     // TODO: Implement operator=
     // LAB: Smart Pointer Project Lab
-    cout << "assignemnt 1";
 
     typename std::list<PtrDetails<T> >::iterator tmp_ptr;
     tmp_ptr =  findPtrInfo(this->addr);
     tmp_ptr->refcount -= 1;
     
-    cout << "TMP REF CNT :: " << tmp_ptr->refcount;
     this->addr = t;
     this->arraySize = size;
     if (arraySize > 0)
@@ -205,16 +232,13 @@ Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv){
 
     // TODO: Implement operator=
     // LAB: Smart Pointer Project Lab
-    cout << "assignment 2";
 
 
     typename std::list<PtrDetails<T> >::iterator tmp_ptr;
 
     //Decrement LHS refcount
     tmp_ptr = findPtrInfo(this->addr);
-    cout << "\nOLD LHS ref count :: " << tmp_ptr->refcount << "\n";
     tmp_ptr->refcount -= 1;
-    cout << "\nNEW LHS ref count :: " << tmp_ptr->refcount << "\n";
 
 
     this->addr = rv.addr;
@@ -223,9 +247,7 @@ Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv){
 
     //Increment RHS  refcount
     tmp_ptr = findPtrInfo(rv.addr);
-    cout << "\nOLD RHS ref count :: " << tmp_ptr->refcount << "\n";
     tmp_ptr->refcount += 1;
-    cout << "\nNEW RHS ref count :: " << tmp_ptr->refcount << "\n";
 }
 
 // A utility function that displays refContainer.
