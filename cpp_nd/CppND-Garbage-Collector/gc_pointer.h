@@ -121,12 +121,7 @@ Pointer<T,size>::Pointer(T *t){
     else
         isArray = false;
     
-    PtrDetails<T> tmp_ptr;
-    tmp_ptr.refcount = 1;
-    tmp_ptr.memPtr = addr;
-    tmp_ptr.isArray = isArray;
-    tmp_ptr.arraySize = arraySize;
-
+    PtrDetails<T> tmp_ptr(addr, isArray, 1, arraySize);
     refContainer.push_back(tmp_ptr);     
     
 }
@@ -215,12 +210,7 @@ T *Pointer<T, size>::operator=(T *t){
     else
         this->isArray = false;
 
-    PtrDetails<T> tmp;
-    tmp.refcount = 1;
-    tmp.memPtr = this->addr;
-    tmp.isArray = this->isArray;
-    tmp.arraySize = this->arraySize;
-
+    PtrDetails<T> tmp(this->addr, this->isArray, 1, this->arraySize);
     refContainer.push_back(tmp);
     
     
