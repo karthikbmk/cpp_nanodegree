@@ -1,4 +1,4 @@
-# C++ Project
+# C++ Nanodegree
 ---
 [//]: # (Image References)
 [planner]: ./cpp_nd/CppND-Route-Planning-Project/misc/rout_pl.png
